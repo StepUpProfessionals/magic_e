@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step Up - Magic E Word Garden</title>
+  <style>
+    :root {
+      --navy: #00274D;
+      --teal: #008080;
+      --coral: #FF4C4C;
+      --cream: #FBF8F2;
+      --paper: #FFFFFF;
+      --ink: #1F2933;
+      --muted: #62717D;
+      --line: #E5E7EB;
+      --soft-blue: #EAF3FF;
+      --soft-teal: #E8F7F5;
+      --soft-coral: #FFF0EF;
+      --soft-orange: #FFF4E5;
+      --soft-purple: #F4EFFF;
+      --shadow: 0 18px 45px rgba(0, 39, 77, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(0,128,128,0.14), transparent 30%),
+        radial-gradient(circle at 90% 15%, rgba(255,76,76,0.10), transparent 28%),
+        linear-gradient(135deg, #fffdf8 0%, #f4f8fb 100%);
+      min-height: 100vh;
+    }
+
+    button, input { font: inherit; }
+
+    .app-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--navy);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      color: white;
+      box-shadow: 0 10px 24px rgba(0,39,77,0.16);
+    }
+
+    .top-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 18px;
+      cursor: pointer;
+      font-weight: 750;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: white;
+      background: var(--navy);
+      box-shadow: 0 12px 30px rgba(0, 39, 77, 0.18);
+    }
+
+    .btn-secondary {
+      color: var(--navy);
+      background: white;
+      border: 1px solid rgba(0,39,77,0.12);
+    }
+
+    .btn-teal {
+      color: white;
+      background: var(--teal);
+      box-shadow: 0 12px 30px rgba(0,128,128,0.18);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 34px;
+      padding: clamp(30px, 5vw, 58px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -70px -100px auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0,128,128,0.12), rgba(255,76,76,0.08));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal);
+      background: rgba(0,128,128,0.09);
+      border: 1px solid rgba(0,128,128,0.12);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 { color: var(--navy); margin: 0; line-height: 1.08; }
+
+    h1 {
+      max-width: 850px;
+      font-size: clamp(2.4rem, 6vw, 5.2rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      max-width: 740px;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0 0 26px;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+    .section {
+      margin-top: 24px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(0,39,77,0.08);
+      border-radius: 28px;
+      padding: clamp(22px, 3vw, 34px);
+      box-shadow: 0 14px 34px rgba(0,39,77,0.06);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      letter-spacing: -0.035em;
+    }
+
+    .section p { color: var(--muted); line-height: 1.7; }
+
+    .explain-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .info-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .examples {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .example-pill {
+      border-radius: 16px;
+      padding: 14px;
+      background: linear-gradient(135deg, #fff, #f6fbfb);
+      border: 1px solid rgba(0,128,128,0.12);
+      font-weight: 850;
+      color: var(--navy);
+    }
+
+    .example-pill span {
+      color: var(--teal);
+      display: block;
+      margin-top: 4px;
+      font-weight: 750;
+    }
+
+    .progress-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #EDF1F5;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--coral));
+      transition: width 0.35s ease;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .check-item {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      padding: 10px 8px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      font-weight: 750;
+      text-align: center;
+    }
+
+    .check-item.done {
+      color: var(--navy);
+      border-color: rgba(0,128,128,0.35);
+      background: rgba(0,128,128,0.08);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .tab-btn {
+      border: 1px solid rgba(0,39,77,0.12);
+      background: white;
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: 0.2s ease;
+    }
+
+    .tab-btn.active {
+      color: white;
+      background: var(--navy);
+      box-shadow: 0 10px 26px rgba(0,39,77,0.15);
+    }
+
+    .garden-panel {
+      border-radius: 26px;
+      padding: clamp(18px, 3vw, 28px);
+      border: 1px solid rgba(0,39,77,0.08);
+      background: var(--soft-blue);
+    }
+
+    .garden-panel[data-vowel="E"] { background: var(--soft-teal); }
+    .garden-panel[data-vowel="I"] { background: var(--soft-coral); }
+    .garden-panel[data-vowel="O"] { background: var(--soft-orange); }
+    .garden-panel[data-vowel="U"] { background: var(--soft-purple); }
+
+    .garden-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .sound-badge {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(0,39,77,0.08);
+      color: var(--navy);
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .family-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 13px;
+    }
+
+    .family-card {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(0,39,77,0.08);
+      border-radius: 20px;
+      padding: 16px;
+    }
+
+    .family-name {
+      color: var(--teal);
+      font-size: 1.05rem;
+      font-weight: 900;
+      margin-bottom: 9px;
+    }
+
+    .word-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .word-chip {
+      background: white;
+      border: 1px solid rgba(0,39,77,0.08);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--ink);
+      font-weight: 650;
+      font-size: 0.92rem;
+    }
+
+    .practice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .practice-card {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(0,39,77,0.08);
+      border-radius: 22px;
+      padding: 20px;
+    }
+
+    .practice-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 12px;
+    }
+
+    .sentence-list, .twister-list {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sentence-list li, .twister-list li {
+      background: white;
+      border: 1px solid rgba(0,39,77,0.07);
+      border-radius: 15px;
+      padding: 12px 13px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .mini-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .mini-btn {
+      border: 1px solid rgba(0,39,77,0.10);
+      color: var(--navy);
+      background: white;
+      border-radius: 999px;
+      padding: 8px 11px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.88rem;
+    }
+
+    .hint-box {
+      display: none;
+      margin-top: 12px;
+      background: rgba(0,39,77,0.05);
+      color: var(--navy);
+      border-radius: 15px;
+      padding: 12px;
+      font-weight: 750;
+    }
+
+    .hint-box.show { display: block; }
+
+    .complete-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .completion-note {
+      font-weight: 800;
+      color: var(--teal);
+      display: none;
+    }
+
+    .completion-note.show { display: inline-flex; }
+
+    .activities {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .activity-card {
+      background: white;
+      border: 1px solid rgba(0,39,77,0.08);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 12px 28px rgba(0,39,77,0.05);
+    }
+
+    .activity-card h3 {
+      font-size: 1.32rem;
+      margin-bottom: 8px;
+    }
+
+    .quiz-word {
+      margin: 18px 0 14px;
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--soft-teal), var(--soft-blue));
+      color: var(--navy);
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 950;
+      letter-spacing: -0.035em;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 9px;
+    }
+
+    .option-btn {
+      width: 100%;
+      border: 1px solid rgba(0,39,77,0.10);
+      background: white;
+      color: var(--navy);
+      border-radius: 15px;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: 850;
+      text-align: left;
+    }
+
+    .option-btn.correct { border-color: rgba(0,128,128,0.4); background: rgba(0,128,128,0.08); }
+    .option-btn.incorrect { border-color: rgba(255,76,76,0.35); background: rgba(255,76,76,0.08); }
+
+    .feedback {
+      min-height: 48px;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 15px;
+      background: #F6F8FA;
+      color: var(--navy);
+      font-weight: 750;
+      line-height: 1.45;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .select-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 12px 0 16px;
+    }
+
+    select {
+      border: 1px solid rgba(0,39,77,0.13);
+      background: white;
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      outline: none;
+    }
+
+    .builder-bank, .sentence-board {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 56px;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px dashed rgba(0,39,77,0.18);
+      background: #FAFBFC;
+      margin-top: 10px;
+    }
+
+    .builder-word {
+      border: 1px solid rgba(0,39,77,0.10);
+      background: white;
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 8px 11px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .builder-word.used { opacity: 0.45; pointer-events: none; }
+
+    .final-message {
+      display: none;
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(0,128,128,0.10), rgba(255,76,76,0.08));
+      color: var(--navy);
+      border: 1px solid rgba(0,128,128,0.16);
+    }
+
+    .final-message.show { display: block; }
+
+    .footer {
+      margin-top: 24px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    .footer strong { color: var(--navy); }
+
+    @media (max-width: 820px) {
+      .topbar, .section-header, .garden-top { flex-direction: column; align-items: stretch; }
+      .explain-grid, .practice-grid, .activities { grid-template-columns: 1fr; }
+      .checklist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero { border-radius: 26px; }
+      .top-actions, .hero-actions { width: 100%; }
+      .btn { width: 100%; }
+    }
+
+    @media print {
+      body { background: white; }
+      .app-shell { width: 100%; padding: 0; }
+      .topbar, .hero-actions, .tabs, .complete-row, .mini-actions, .activities, .btn, .top-actions { display: none !important; }
+      .hero, .section, .garden-panel, .practice-card, .info-card { box-shadow: none; border-color: #D8DEE6; }
+      .hero, .section { page-break-inside: avoid; }
+      .footer { margin-top: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar" aria-label="Top navigation">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">SU</div>
+        <div>Step Up Professional Language Services</div>
+      </div>
+      <div class="top-actions">
+        <button class="btn btn-secondary" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="welcome">
+        <div class="eyebrow">Pronunciation Lab · Adult Learners</div>
+        <h1>Step Up - Magic E Word Garden</h1>
+        <p class="subtitle">Practice long vowel sounds with silent E through word families, guided sentences, short reading challenges, and simple interactive activities.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#magic-e" style="text-decoration:none; display:inline-flex;">Start Practice</a>
+          <a class="btn btn-secondary" href="#activities" style="text-decoration:none; display:inline-flex;">Go to Activities</a>
+        </div>
+      </section>
+
+      <section class="section" id="magic-e">
+        <div class="section-header">
+          <div>
+            <h2>What is Magic E?</h2>
+            <p>Una explicación breve para entender el patrón antes de practicar.</p>
+          </div>
+        </div>
+
+        <div class="explain-grid">
+          <div class="info-card">
+            <p><strong>English:</strong> Magic E is a silent final “e” that usually makes the vowel before it say its long sound.</p>
+            <p><strong>Español:</strong> La “e” final no se pronuncia, pero normalmente hace que la vocal anterior suene como vocal larga.</p>
+            <p><strong>Focus:</strong> In this activity, focus on the sound pattern, not translation.</p>
+            <p><strong>Enfoque:</strong> Concéntrate en el patrón de sonido, no en traducir palabra por palabra.</p>
+          </div>
+          <div class="info-card examples" aria-label="Magic E examples">
+            <div class="example-pill">make <span>/meɪk/</span></div>
+            <div class="example-pill">time <span>/taɪm/</span></div>
+            <div class="example-pill">home <span>/hoʊm/</span></div>
+            <div class="example-pill">cute <span>/kjuːt/</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="progress-section">
+        <div class="section-header">
+          <div>
+            <h2>Progress Tracker</h2>
+            <p>Marca cada vocal como completada durante la clase o práctica individual.</p>
+          </div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-bar" aria-label="Progress bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="checklist" id="checklist"></div>
+          <div class="final-message" id="finalMessage">
+            <strong>Congratulations! You are a Magic E Explorer.</strong><br />
+            ¡Felicitaciones! Has completado la práctica de Magic E.
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="gardens">
+        <div class="section-header">
+          <div>
+            <h2>Vowel Gardens</h2>
+            <p>Choose a long vowel sound and read the word families aloud.</p>
+          </div>
+        </div>
+        <div class="tabs" id="tabs"></div>
+        <div id="gardenMount"></div>
+      </section>
+
+      <section class="section" id="activities">
+        <div class="section-header">
+          <div>
+            <h2>Interactive Practice</h2>
+            <p>Actividades cortas para reforzar reconocimiento visual y lectura.</p>
+          </div>
+        </div>
+
+        <div class="activities">
+          <article class="activity-card" aria-label="Choose the Long Vowel Sound">
+            <h3>Choose the Long Vowel Sound</h3>
+            <p>Look at the word and choose its long vowel sound.</p>
+            <div class="quiz-word" id="quizWord">make</div>
+            <div class="options-grid" id="quizOptions"></div>
+            <div class="feedback" id="quizFeedback">Choose an option to begin.</div>
+            <div class="score-row">
+              <strong id="scoreText">Score: 0 / 0</strong>
+              <button class="btn btn-secondary" onclick="nextQuizWord()">Next word</button>
+            </div>
+          </article>
+
+          <article class="activity-card" aria-label="Build a Sentence">
+            <h3>Build a Sentence</h3>
+            <p>Click the words to build one sentence. Puedes cambiar la vocal.</p>
+            <div class="select-row">
+              <label for="builderSelect"><strong>Vowel:</strong></label>
+              <select id="builderSelect" onchange="newBuilderSet()"></select>
+            </div>
+            <strong>Word bank</strong>
+            <div class="builder-bank" id="builderBank"></div>
+            <strong>Your sentence</strong>
+            <div class="sentence-board" id="sentenceBoard"></div>
+            <div class="mini-actions">
+              <button class="mini-btn" onclick="clearBuilder()">Clear</button>
+              <button class="mini-btn" onclick="checkBuilder()">Check sentence</button>
+              <button class="mini-btn" onclick="newBuilderSet()">New set</button>
+            </div>
+            <div class="feedback" id="builderFeedback">Build a sentence from the word bank.</div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <strong>Created by Step Up Professional Language Services.</strong><br />
+      Premium pronunciation practice for adult learners and professionals.
+    </footer>
+  </div>
+
+  <script>
+    const vowelData = {
+      A: {
+        label: "Long A",
+        sound: "/eɪ/",
+        theme: "A",
+        families: {
+          "-ake": ["cake", "fake", "lake", "make", "rake", "take", "wake", "bake", "shake", "snake", "brake", "flake", "stake", "quake"],
+          "-ale": ["bale", "gale", "male", "pale", "sale", "tale", "whale", "scale", "stale", "vale"],
+          "-ame": ["came", "dame", "fame", "game", "lame", "name", "same", "tame", "blame", "flame", "frame", "shame"],
+          "-ane": ["bane", "cane", "lane", "mane", "pane", "sane", "vane", "crane", "plane", "insane"],
+          "-ape": ["cape", "drape", "gape", "grape", "scrape", "shape", "tape", "escape"],
+          "-ate": ["date", "fate", "gate", "hate", "late", "mate", "rate", "grate", "plate", "skate", "state", "crate", "create"],
+          "-ave": ["brave", "cave", "gave", "pave", "rave", "save", "shave", "slave", "wave", "crave", "engrave"],
+          "-aze": ["blaze", "daze", "gaze", "glaze", "graze", "haze", "maze", "phase"],
+          "-ade": ["blade", "fade", "grade", "jade", "made", "shade", "spade", "trade", "wade", "cascade", "parade", "arcade", "upgrade"],
+          "-ace": ["face", "grace", "lace", "pace", "place", "race", "space", "trace", "brace"],
+          "-age": ["age", "cage", "page", "rage", "sage", "stage", "wage"],
+          "-are": ["bare", "care", "dare", "fare", "hare", "rare", "share", "spare", "stare", "square", "ware", "compare", "prepare"]
+        },
+        sentences: [
+          "The snake is by the lake.",
+          "Take the cake to the gate.",
+          "A brave whale can make a wave.",
+          "Grace made a cake and a plate.",
+          "The plane came late.",
+          "The flame is by the gate.",
+          "The name is on the page.",
+          "A crane can take a frame."
+        ],
+        twisters: [
+          "Grace made a cake at the gate.",
+          "The brave snake made a wave by the lake.",
+          "Take the plate, make a cake, and skate late."
+        ],
+        builder: {
+          bank: ["the", "snake", "is", "by", "the", "lake", "take", "cake", "to", "gate", "plane", "came", "late"],
+          expected: ["The snake is by the lake.", "Take the cake to the gate.", "The plane came late."]
+        }
+      },
+      E: {
+        label: "Long E",
+        sound: "/iː/",
+        theme: "E",
+        families: {
+          "-ere": ["here", "mere", "sphere", "sincere", "severe", "adhere", "atmosphere", "hemisphere"],
+          "-ene": ["gene", "scene", "serene", "convene", "intervene"],
+          "-eme": ["theme", "scheme", "extreme", "supreme"],
+          "-ete": ["athlete", "complete", "compete", "delete", "concrete", "obsolete", "discrete"],
+          "-ede": ["cede", "precede", "concede", "recede", "stampede", "impede", "centipede", "intercede"]
+        },
+        sentences: [
+          "The athlete can compete.",
+          "Here is a complete scene.",
+          "The theme is extreme.",
+          "A severe scheme can impede.",
+          "The sphere is here.",
+          "The serene scene is complete.",
+          "The supreme theme is here.",
+          "The athlete can delete the theme."
+        ],
+        twisters: [
+          "The complete theme is extreme.",
+          "Here, the severe athlete can compete.",
+          "The serene scene is here."
+        ],
+        builder: {
+          bank: ["the", "athlete", "can", "compete", "here", "is", "a", "complete", "scene", "the", "theme", "is", "extreme"],
+          expected: ["The athlete can compete.", "Here is a complete scene.", "The theme is extreme."]
+        }
+      },
+      I: {
+        label: "Long I",
+        sound: "/aɪ/",
+        theme: "I",
+        families: {
+          "-ine": ["dine", "fine", "line", "mine", "nine", "pine", "vine", "wine", "shine", "shrine", "spine", "divine", "decline", "define", "refine", "recline", "combine", "confine", "outline", "intertwine", "whine"],
+          "-ide": ["bride", "glide", "hide", "pride", "ride", "side", "slide", "stride", "tide", "wide", "abide", "decide", "divide", "confide", "provide", "reside", "inside", "outside", "override"],
+          "-ike": ["bike", "hike", "like", "spike", "strike", "pike"],
+          "-ile": ["file", "mile", "pile", "tile", "vile", "while", "smile", "exile", "profile"],
+          "-ime": ["crime", "dime", "lime", "prime", "time", "chime", "grime", "slime", "sublime"],
+          "-ipe": ["pipe", "ripe", "stripe", "swipe", "wipe", "gripe", "snipe"],
+          "-ire": ["fire", "hire", "tire", "wire", "admire", "aspire", "desire", "entire", "expire", "inspire", "require", "retire", "empire"],
+          "-ite": ["bite", "cite", "kite", "quite", "spite", "white", "write", "excite", "ignite", "invite", "polite", "recite", "unite", "despite"],
+          "-ive": ["drive", "five", "hive", "thrive", "strive", "arrive", "survive", "deprive", "derive", "revive", "contrive"],
+          "-ise": ["rise", "wise", "advise", "arise", "comprise", "sunrise", "surprise", "enterprise", "paradise"]
+        },
+        sentences: [
+          "I ride a bike in a wide line.",
+          "The white kite can glide.",
+          "Five vines shine in a line.",
+          "I will write a fine line.",
+          "The bride can smile with pride.",
+          "The file is inside.",
+          "The tire is by the bike.",
+          "I like the white stripe."
+        ],
+        twisters: [
+          "Five fine vines shine in a wide line.",
+          "The white kite can glide by the bike.",
+          "I write nine lines inside the file."
+        ],
+        builder: {
+          bank: ["i", "ride", "a", "bike", "in", "a", "wide", "line", "the", "white", "kite", "can", "glide", "the", "file", "is", "inside"],
+          expected: ["I ride a bike in a wide line.", "The white kite can glide.", "The file is inside."]
+        }
+      },
+      O: {
+        label: "Long O",
+        sound: "/oʊ/",
+        theme: "O",
+        families: {
+          "-one": ["bone", "cone", "lone", "stone", "tone", "zone", "drone", "phone", "throne", "clone", "alone", "ozone", "postpone", "trombone"],
+          "-oke": ["broke", "choke", "joke", "poke", "smoke", "spoke", "stroke", "woke", "yoke", "evoke", "invoke", "provoke"],
+          "-ole": ["mole", "pole", "role", "sole", "whole", "console", "parole"],
+          "-ome": ["dome", "home", "chrome", "gnome", "genome", "syndrome"],
+          "-ope": ["cope", "hope", "mope", "rope", "slope", "scope", "grope", "elope"],
+          "-ore": ["bore", "core", "more", "pore", "score", "shore", "snore", "sore", "store", "adore", "explore", "ignore", "restore"],
+          "-ose": ["chose", "close", "dose", "nose", "pose", "prose", "rose", "those", "compose", "expose", "propose", "suppose", "dispose"],
+          "-ote": ["note", "quote", "vote", "devote", "remote", "promote", "antidote"],
+          "-ove": ["cove", "drove", "grove", "stove", "wove", "clove", "trove"],
+          "-ogue": ["vogue", "rogue"]
+        },
+        sentences: [
+          "The phone is at home.",
+          "The stone is close to the rose.",
+          "A drone can go to the zone.",
+          "I hope to vote by remote note.",
+          "The smoke rose from the stove.",
+          "The cone is by the stone.",
+          "The rose is close to the phone.",
+          "The note is at home."
+        ],
+        twisters: [
+          "The stone phone is close to the rose.",
+          "I hope the drone is at home.",
+          "The smoke rose from the stove."
+        ],
+        builder: {
+          bank: ["the", "phone", "is", "at", "home", "the", "stone", "is", "close", "to", "the", "rose", "the", "note", "is", "at", "home"],
+          expected: ["The phone is at home.", "The stone is close to the rose.", "The note is at home."]
+        }
+      },
+      U: {
+        label: "Long U",
+        sound: "/juː/ or /uː/",
+        theme: "U",
+        families: {
+          "-ube": ["cube", "lube", "tube"],
+          "-ude": ["crude", "dude", "nude", "rude", "exclude", "include", "intrude", "conclude", "exude", "prelude", "interlude"],
+          "-uke": ["duke", "fluke", "nuke"],
+          "-ule": ["mule", "rule", "yule"],
+          "-une": ["dune", "tune", "prune", "commune", "immune"],
+          "-use": ["fuse", "muse", "use", "abuse", "accuse", "amuse", "confuse", "excuse", "refuse"],
+          "-ute": ["brute", "cute", "flute", "mute", "astute", "compute", "dispute", "execute", "pollute", "salute", "substitute"]
+        },
+        sentences: [
+          "The cute mule can use a tube.",
+          "A rude dude can refuse.",
+          "The flute is in the cube.",
+          "We include a tune and a rule.",
+          "Do not confuse the mute tune.",
+          "The duke can use a flute.",
+          "The cube is by the tube.",
+          "A cute mule can salute."
+        ],
+        twisters: [
+          "The cute mule can use a tube.",
+          "The rude dude can refuse the tune.",
+          "Use the flute, mute the rule, and compute."
+        ],
+        builder: {
+          bank: ["the", "cute", "mule", "can", "use", "a", "tube", "a", "rude", "dude", "can", "refuse", "the", "flute", "is", "in", "the", "cube"],
+          expected: ["The cute mule can use a tube.", "A rude dude can refuse.", "The flute is in the cube."]
+        }
+      }
+    };
+
+    const state = {
+      active: "A",
+      completed: new Set(),
+      quiz: { current: null, score: 0, total: 0, answered: false },
+      builder: { selected: [], activeBank: [], expected: [] }
+    };
+
+    function titleCaseSentence(words) {
+      const text = words.join(" ").replace(/\s+/g, " ").trim();
+      if (!text) return "";
+      return text.charAt(0).toUpperCase() + text.slice(1) + ".";
+    }
+
+    function normalizeSentence(sentence) {
+      return sentence.toLowerCase().replace(/[^a-z\s]/g, "").replace(/\s+/g, " ").trim();
+    }
+
+    function allQuizWords() {
+      const items = [];
+      Object.entries(vowelData).forEach(([key, data]) => {
+        Object.entries(data.families).forEach(([family, words]) => {
+          words.forEach(word => items.push({ word, vowel: key, family }));
+        });
+      });
+      return items;
+    }
+
+    function init() {
+      renderTabs();
+      renderGarden(state.active);
+      renderChecklist();
+      initBuilderSelect();
+      newBuilderSet();
+      nextQuizWord();
+    }
+
+    function renderTabs() {
+      const tabs = document.getElementById("tabs");
+      tabs.innerHTML = "";
+      Object.entries(vowelData).forEach(([key, data]) => {
+        const btn = document.createElement("button");
+        btn.className = "tab-btn" + (key === state.active ? " active" : "");
+        btn.textContent = `${data.label} ${data.sound}`;
+        btn.onclick = () => {
+          state.active = key;
+          renderTabs();
+          renderGarden(key);
+        };
+        tabs.appendChild(btn);
+      });
+    }
+
+    function renderGarden(key) {
+      const data = vowelData[key];
+      const mount = document.getElementById("gardenMount");
+      const families = Object.entries(data.families).map(([family, words]) => `
+        <article class="family-card">
+          <div class="family-name">${family}</div>
+          <div class="word-list">${words.map(word => `<span class="word-chip">${word}</span>`).join("")}</div>
+        </article>
+      `).join("");
+
+      const sentences = data.sentences.map(sentence => `<li>${sentence}</li>`).join("");
+      const twisters = data.twisters.map(sentence => `<li>${sentence}</li>`).join("");
+      const completed = state.completed.has(key);
+
+      mount.innerHTML = `
+        <div class="garden-panel" data-vowel="${key}">
+          <div class="garden-top">
+            <div>
+              <h2>${data.label} Garden</h2>
+              <p>Read the families aloud. Notice how the final silent E supports the long vowel sound.</p>
+            </div>
+            <div class="sound-badge">${data.sound}</div>
+          </div>
+
+          <div class="family-grid">${families}</div>
+
+          <div class="practice-grid">
+            <article class="practice-card">
+              <h3>Sentence Practice</h3>
+              <ul class="sentence-list">${sentences}</ul>
+            </article>
+            <article class="practice-card">
+              <h3>Tongue Twister Challenge</h3>
+              <ul class="twister-list">${twisters}</ul>
+              <div class="mini-actions">
+                <button class="mini-btn" onclick="showHint('slow')">Read slowly</button>
+                <button class="mini-btn" onclick="showHint('fast')">Read faster</button>
+                <button class="mini-btn" onclick="showHint('repeat')">Repeat 3 times</button>
+              </div>
+              <div class="hint-box" id="twisterHint"></div>
+            </article>
+          </div>
+
+          <div class="complete-row">
+            <button class="btn btn-teal" onclick="markCompleted('${key}')">Mark as completed</button>
+            <span class="completion-note ${completed ? "show" : ""}" id="completeNote">✓ ${data.label} completed</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function showHint(type) {
+      const hint = document.getElementById("twisterHint");
+      const messages = {
+        slow: "Read each word slowly. Stretch the long vowel sound clearly.",
+        fast: "Now read with a natural rhythm. Keep the final E silent.",
+        repeat: "Repeat the same line 3 times. Aim for clarity before speed."
+      };
+      hint.textContent = messages[type];
+      hint.classList.add("show");
+    }
+
+    function markCompleted(key) {
+      state.completed.add(key);
+      renderGarden(key);
+      renderChecklist();
+    }
+
+    function renderChecklist() {
+      const checklist = document.getElementById("checklist");
+      checklist.innerHTML = "";
+      Object.entries(vowelData).forEach(([key, data]) => {
+        const item = document.createElement("div");
+        item.className = "check-item" + (state.completed.has(key) ? " done" : "");
+        item.textContent = `${state.completed.has(key) ? "✓ " : "○ "}${data.label}`;
+        checklist.appendChild(item);
+      });
+      const percent = (state.completed.size / Object.keys(vowelData).length) * 100;
+      document.getElementById("progressFill").style.width = `${percent}%`;
+      document.getElementById("finalMessage").classList.toggle("show", percent === 100);
+    }
+
+    function nextQuizWord() {
+      const words = allQuizWords();
+      const item = words[Math.floor(Math.random() * words.length)];
+      state.quiz.current = item;
+      state.quiz.answered = false;
+      document.getElementById("quizWord").textContent = item.word;
+      document.getElementById("quizFeedback").textContent = "Choose the long vowel sound.";
+      renderQuizOptions();
+      updateScore();
+    }
+
+    function renderQuizOptions() {
+      const options = document.getElementById("quizOptions");
+      options.innerHTML = "";
+      Object.entries(vowelData).forEach(([key, data]) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = `${data.label} ${data.sound}`;
+        btn.onclick = () => answerQuiz(key, btn);
+        options.appendChild(btn);
+      });
+    }
+
+    function answerQuiz(choice, button) {
+      if (state.quiz.answered) return;
+      const current = state.quiz.current;
+      state.quiz.total += 1;
+      state.quiz.answered = true;
+      const buttons = [...document.querySelectorAll(".option-btn")];
+      if (choice === current.vowel) {
+        state.quiz.score += 1;
+        button.classList.add("correct");
+        document.getElementById("quizFeedback").textContent = `Correct! “${current.word}” has the ${vowelData[current.vowel].label} sound.`;
+      } else {
+        button.classList.add("incorrect");
+        buttons.forEach(btn => {
+          if (btn.textContent.startsWith(vowelData[current.vowel].label)) btn.classList.add("correct");
+        });
+        document.getElementById("quizFeedback").textContent = `Try again. Look at the word family: ${current.family}.`;
+      }
+      updateScore();
+    }
+
+    function updateScore() {
+      document.getElementById("scoreText").textContent = `Score: ${state.quiz.score} / ${state.quiz.total}`;
+    }
+
+    function initBuilderSelect() {
+      const select = document.getElementById("builderSelect");
+      select.innerHTML = "";
+      Object.entries(vowelData).forEach(([key, data]) => {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = `${data.label} ${data.sound}`;
+        select.appendChild(option);
+      });
+      select.value = state.active;
+    }
+
+    function newBuilderSet() {
+      const key = document.getElementById("builderSelect").value || "A";
+      const builder = vowelData[key].builder;
+      state.builder.selected = [];
+      state.builder.activeBank = builder.bank.map((word, index) => ({ word, index, used: false }));
+      state.builder.expected = builder.expected;
+      document.getElementById("builderFeedback").textContent = "Build a sentence from the word bank.";
+      renderBuilder();
+    }
+
+    function renderBuilder() {
+      const bank = document.getElementById("builderBank");
+      const board = document.getElementById("sentenceBoard");
+      bank.innerHTML = "";
+      board.innerHTML = "";
+
+      state.builder.activeBank.forEach(item => {
+        const btn = document.createElement("button");
+        btn.className = "builder-word" + (item.used ? " used" : "");
+        btn.textContent = item.word;
+        btn.onclick = () => {
+          if (!item.used) {
+            item.used = true;
+            state.builder.selected.push(item.word);
+            renderBuilder();
+          }
+        };
+        bank.appendChild(btn);
+      });
+
+      state.builder.selected.forEach(word => {
+        const chip = document.createElement("span");
+        chip.className = "word-chip";
+        chip.textContent = word;
+        board.appendChild(chip);
+      });
+    }
+
+    function clearBuilder() {
+      state.builder.selected = [];
+      state.builder.activeBank.forEach(item => item.used = false);
+      document.getElementById("builderFeedback").textContent = "Build a sentence from the word bank.";
+      renderBuilder();
+    }
+
+    function checkBuilder() {
+      const attempt = titleCaseSentence(state.builder.selected);
+      const normalizedAttempt = normalizeSentence(attempt);
+      const valid = state.builder.expected.some(sentence => normalizeSentence(sentence) === normalizedAttempt);
+      const feedback = document.getElementById("builderFeedback");
+      if (!state.builder.selected.length) {
+        feedback.textContent = "Choose words first.";
+        return;
+      }
+      if (valid) {
+        feedback.textContent = `Correct sentence: ${attempt}`;
+      } else {
+        feedback.textContent = `Good practice. Try one of these patterns: ${state.builder.expected.join(" / ")}`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
