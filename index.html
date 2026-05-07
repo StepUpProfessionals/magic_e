@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step Up - Magic E Word Garden</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar" aria-label="Top navigation">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">SU</div>
+        <div>Step Up Business Solutions</div>
+      </div>
+      
+	 <div class="top-actions mission-timer" aria-label="Mission timer">
+		<span class="timer-label">Mission Time</span>
+		<strong id="missionTimer">48:00:00</strong>
+		</div>
+	  	  
+    </header>
+
+    <main>
+      <section class="hero" id="welcome">
+        <div class="eyebrow">Interactive Practice · Adult Learners</div>
+        <h1>Magic E Practice Mission</h1>
+        <p class="subtitle">Complete the activities, identify long vowel sounds, build sentences, and generate your study evidence.</p>
+      <div class="hero-actions">
+	<a class="btn btn-primary" href="#activities" style="text-decoration:none; display:inline-flex;">Start Mission</a>
+	</div>
+      </section>
+
+      <section class="section" id="magic-e">
+        <div class="section-header">
+          <div>
+            <h2>What is Magic E?</h2>
+            <p>Una explicación breve para entender el patrón antes de practicar.</p>
+          </div>
+        </div>
+
+        <div class="explain-grid">
+          <div class="info-card">
+            <p><strong>English:</strong> Magic E is a silent final “e” that usually makes the vowel before it say its long sound.</p>
+            <p><strong>Español:</strong> La “e” final no se pronuncia, pero normalmente hace que la vocal anterior suene como vocal larga.</p>
+            <p><strong>Focus:</strong> In this activity, focus on the sound pattern, not translation.</p>
+            <p><strong>Enfoque:</strong> Concéntrate en el patrón de sonido, no en traducir palabra por palabra.</p>
+          </div>
+          <div class="info-card examples" aria-label="Magic E examples">
+            <div class="example-pill">make <span>/meɪk/</span></div>
+            <div class="example-pill">time <span>/taɪm/</span></div>
+            <div class="example-pill">home <span>/hoʊm/</span></div>
+            <div class="example-pill">cute <span>/kjuːt/</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="progress-section">
+        <div class="section-header">
+          <div>
+            <h2>Progress Tracker</h2>
+            <p>Marca cada vocal como completada durante la clase o práctica individual.</p>
+          </div>
+        </div>
+        <div class="progress-card">
+          <div class="progress-bar" aria-label="Progress bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="checklist" id="checklist"></div>
+          <div class="final-message" id="finalMessage">
+            <strong>Congratulations! You are a Magic E Explorer.</strong><br />
+            ¡Felicitaciones! Has completado la práctica de Magic E.
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="gardens">
+        <div class="section-header">
+          <div>
+            <h2>Vowel Gardens</h2>
+            <p>Choose a long vowel sound and read the word families aloud.</p>
+          </div>
+        </div>
+        <div class="tabs" id="tabs"></div>
+        <div id="gardenMount"></div>
+      </section>
+	
+	<section class="section expired-message" id="expiredMessage">
+	
+		<h2>Mission Time Expired</h2>
+		<p>This practice mission is no longer available. Please contact your instructor to request a new access window.</p>
+		</section>
+
+
+      <section class="section" id="activities">
+        <div class="section-header">
+          
+		  <div>
+            <h2>Mission Activities</h2>
+            <p>Complete these activities to practice Magic E sounds and strengthen your pronunciation accuracy.</p>
+          </div>
+        </div>
+
+        <div class="activities">
+          <article class="activity-card" aria-label="Choose the Long Vowel Sound">
+            <h3>Activity 1: Choose the Long Vowel Sound</h3>
+            <p>Select the correct long vowel sound for each word..</p>
+            <div class="quiz-word" id="quizWord">make</div>
+            <div class="options-grid" id="quizOptions"></div>
+            <div class="feedback" id="quizFeedback">Choose an option to begin.</div>
+            <div class="score-row">
+              <strong id="scoreText">Score: 0 / 0</strong>
+              <button class="btn btn-secondary" onclick="nextQuizWord()">Next word</button>
+            </div>
+          </article>
+
+          <article class="activity-card" aria-label="Build a Sentence">
+            <h3>Activity 2: Build a Sentence</h3>
+            <p>Build a correct sentence using the words provided.</p>
+            <div class="select-row">
+              <label for="builderSelect"><strong>Vowel:</strong></label>
+              <select id="builderSelect" onchange="newBuilderSet()"></select>
+            </div>
+            <strong>Word bank</strong>
+            <div class="builder-bank" id="builderBank"></div>
+            <strong>Your sentence</strong>
+            <div class="sentence-board" id="sentenceBoard"></div>
+            <div class="mini-actions">
+              <button class="mini-btn" onclick="clearBuilder()">Clear</button>
+              <button class="mini-btn" onclick="checkBuilder()">Check sentence</button>
+              <button class="mini-btn" onclick="newBuilderSet()">New set</button>
+            </div>
+            <div class="feedback" id="builderFeedback">Build a sentence from the word bank.</div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <strong>Created by Step Up Business Solutions</strong><br />
+      Premium pronunciation practice for adult learners and professionals.
+    </footer>
+  </div>
+<script src="script.js"></script>
+  </body>
+</html>
